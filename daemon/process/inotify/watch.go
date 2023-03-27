@@ -54,6 +54,10 @@ func (d *defaultWatcher) Watch(ctx context.Context, dirs []string, mod chan<- mo
 				path := e.Path()
 
 				log.Tracef("received event %s for %s", e.Event().String(), path)
+				if strings.Contains(path, "/Library/") {
+					continue
+				}
+
 				stat, err := os.Stat(path)
 				if err != nil {
 					log.Trace(fmt.Errorf("unable to stat inotify file '%s': %w", path, err))
